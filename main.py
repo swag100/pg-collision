@@ -7,7 +7,7 @@ class Game:
         self.screen = screen
         self.objects = (
             Player(),
-            Player([100, 0])
+            Tile([100, 0])
         )
     def handle_events(self):
         for event in pygame.event.get(): 
@@ -21,7 +21,7 @@ class Game:
     def draw(self):
         self.screen.fill((0, 0, 0))
         for obj in self.objects: obj.draw()
-        pygame.display.update() 
+        pygame.display.update()
 
 class Player:
     def __init__(self, position = [0, 0]):
@@ -34,10 +34,18 @@ class Player:
             keys[pygame.K_DOWN] - keys[pygame.K_UP]
         ]
 
-        self.position = tuple(sum(x) for x in zip(self.position, keys_input * dt))
-        self.rect = pygame.Rect(self.position, (16, 16))
+        self.position = tuple(sum(x) for x in zip(self.position, (keys_input * dt) * 12))
+        self.rect = pygame.Rect(self.position, (24, 24))
     def draw(self):
         pygame.draw.rect(screen, (255, 0, 0), self.rect)
+
+class Tile:
+    def __init__(self, position):
+        self.rect = pygame.Rect(position, (24, 24))
+    def tick(self, dt):
+        pass
+    def draw(self):
+        pygame.draw.rect(screen, (0, 255, 0), self.rect)
 
 pygame.init() 
 
