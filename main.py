@@ -14,8 +14,12 @@ class Game:
             if event.type == pygame.QUIT: 
                 self.running = False
     def tick(self):
-        for obj in self.objects: obj.tick()
+        clock = pygame.time.Clock()
+        dt = clock.tick(60)
+
+        for obj in self.objects: obj.tick(60)
     def draw(self):
+        self.screen.fill((0, 0, 0))
         for obj in self.objects: obj.draw()
         pygame.display.update() 
 
@@ -23,16 +27,14 @@ class Player:
     def __init__(self, position = [0, 0]):
         self.position = position
         self.rect = pygame.Rect(position, (16, 16))
-    def tick(self):
+    def tick(self, dt):
         keys = pygame.key.get_pressed()
-        keys_input = (
+        keys_input = [
             keys[pygame.K_RIGHT] - keys[pygame.K_LEFT],
-            keys[pygame.K_UP] - keys[pygame.K_DOWN]
-        )
+            keys[pygame.K_DOWN] - keys[pygame.K_UP]
+        ]
 
-        self.position[0] += keys_input[0]
-        self.position[1] += keys_input[1]
-
+        self.position = tuple(sum(x) for x in zip(self.position, keys_input * dt))
         self.rect = pygame.Rect(self.position, (16, 16))
     def draw(self):
         pygame.draw.rect(screen, (255, 0, 0), self.rect)
