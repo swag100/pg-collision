@@ -34,7 +34,7 @@ class Player:
             keys[pygame.K_DOWN] - keys[pygame.K_UP]
         ]
 
-        self.position = tuple(sum(x) for x in zip(self.position, (keys_input * dt) * 12))
+        self.position = tuple(sum(x) for x in zip(self.position, keys_input * dt))
         self.rect = pygame.Rect(self.position, (24, 24))
     def draw(self):
         pygame.draw.rect(screen, (255, 0, 0), self.rect)
